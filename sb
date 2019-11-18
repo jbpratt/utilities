@@ -1,0 +1,14 @@
+#!/bin/bash
+
+monitor=$(xrandr -q | grep ' connected' | head -n 1 | cut -d ' ' -f1)
+brightness=$(xrandr --verbose | grep -m 1 -i brightness | cut -f2 -d ' ')
+
+if [[ $# -lt 1 ]]; then
+	echo '[ERROR]  Invalid input, please supply an up/down value'
+fi
+
+if [[ "$1" == "up" ]]; then
+	xrandr --output "${monitor}" --brightness "$(echo "${brightness}" + 0.10 | bc)"
+elif [[ "$1" == "down" ]]; then
+	xrandr --output "${monitor}" --brightness "$(echo "${brightness}" - 0.10 | bc)"
+fi
