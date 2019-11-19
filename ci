@@ -1,0 +1,15 @@
+#!/bin/bash
+set -eu pipefail
+
+if ! command -v shellcheck >/dev/null; then
+	echo "shellcheck is required" >/dev/stderr
+	exit 1
+fi
+
+files=$(git ls-files -s | grep 755 | awk '{ print $4 }')
+
+for f in $files; do
+	shellcheck "$f"
+done
+
+# https://raw.githubusercontent.com/itchyny/setup/master/script/ci
